@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -8,14 +9,17 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/magic-grid/dist/magic-grid.min.js"></script>
     <link rel="stylesheet" href="index.css">
-  <link rel="icon" href="https://avatars.githubusercontent.com/u/100855856?v=4" type="image/png"></head>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/100855856?v=4" type="image/png">
+</head>
 
   <body>
-    <div id="loading">
+    <!-- تم تدمير مهلة الانتظار برمجياً عبر الستايل المباشر لمنع الدوران اللانهائي -->
+    <div id="loading" style="display: none !important; opacity: 0 !important; visibility: hidden !important;">
       <div id="spinner"></div>
     </div>
+    
     <div id="profile">
-      <div id="profile_img" style="background: url(https://avatars.githubusercontent.com/u/100855856?v=4) center;"></div>
+      <div id="profile_img" style="background: url(https://avatars.githubusercontent.com/u/100855856?v=4) center; background-size: cover;"></div>
       <div id="username"><span style="display:block;">Razan Alzahrani</span><a href="https://github.com/razan-12778">@razan-12778</a></div>
       <div id="userbio" style="display: block;">Data &amp; Governance Analyst | GRC | SQL| Power BI | AI </div>
       <div id="about">
@@ -127,21 +131,17 @@
         <a href="https://github.com/imfunniee" target="_blank">made on earth by a human</a>
       </div>
     </div>
+    
     <script type="text/javascript">
+      // 🎯 تدمير شاشة التحميل فوراً في 0 ثانية لمنع أي تعليق مستقبلي
       setTimeout(function() {
-        document.getElementById("loading").classList.add("animated");
-        document.getElementById("loading").classList.add("fadeOut");
-        setTimeout(function() {
-          document.getElementById("loading").classList.remove("animated");
-          document.getElementById("loading").classList.remove("fadeOut");
-          document.getElementById("loading").style.display = "none";
-        }, 800);
-      }, 1500);
+        document.getElementById("loading").style.display = "none";
+      }, 0);
+
       $.getJSON("blog.json", function(blog) {
         blog = blog || [];
         if (blog.length == 0) {
-          return (document.getElementById("blog_section").style.display =
-            "none");
+          return (document.getElementById("blog_section").style.display = "none");
         }
         for (var i = 0; i < blog.length; i++) {
           $("#blogs").append(`
@@ -167,7 +167,7 @@
       const magicProjectsGrid = new MagicGrid({
         container: "#work_section",
         animate: false,
-        gutter: 30, // default gutter size
+        gutter: 30,
         static: true,
         useMin: false,
         maxColumns: 2,
@@ -177,7 +177,7 @@
       const magicForksGrid = new MagicGrid({
         container: "#forks_section",
         animate: false,
-        gutter: 30, // default gutter size
+        gutter: 30,
         static: true,
         useMin: false,
         maxColumns: 2,
@@ -187,6 +187,11 @@
       $("document").ready(() => {
         magicProjectsGrid.listen();
         magicForksGrid.listen();
+        
+        // إعادة حساب أبعاد شبكة المشاريع بعد إلغاء لودر التحميل لضمان عدم تداخل الكروت
+        setTimeout(() => {
+            magicProjectsGrid.position();
+        }, 200);
       });
     </script>
   
