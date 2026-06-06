@@ -3,18 +3,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>razan-12778</title>
+    <title>Razan Alzahrani - Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/magic-grid/dist/magic-grid.min.js"></script>
     <link rel="stylesheet" href="index.css">
     <link rel="icon" href="https://avatars.githubusercontent.com/u/100855856?v=4" type="image/png">
+
+    <!-- 🌌 كسر عين Gitfolio: حقن الأنميشن وإخفاء اللودر الملعون بأعلى صلاحية للنظام -->
+    <style>
+        #loading { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+        
+        body {
+            margin: 0 !important;
+            background: linear-gradient(-45deg, #000435, #004466, #1c0035, #001122) !important;
+            background-size: 400% 400% !important;
+            animation: gradientBG 10s ease infinite !important;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* قفل أبعاد الصورة دائرية بالملي ومنع تمطيط Gitfolio */
+        #profile_img {
+            width: 220px !important;
+            height: 220px !important;
+            border-radius: 50% !important;
+            background-size: cover !important;
+            background-position: center !important;
+            border: 5px solid #ffffff !important;
+            box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.4) !important;
+            display: block !important;
+            margin: 0 auto 3vh auto !important;
+        }
+    </style>
 </head>
 
   <body>
-    <!-- تم تدمير مهلة الانتظار برمجياً عبر الستايل المباشر لمنع الدوران اللانهائي -->
-    <div id="loading" style="display: none !important; opacity: 0 !important; visibility: hidden !important;">
+    <!-- تم حجب اللودر نهائياً بستايل داخلي صارم -->
+    <div id="loading" style="display: none !important;">
       <div id="spinner"></div>
     </div>
     
@@ -123,7 +154,7 @@
         <h1>Forks.</h1>
         <div class="projects" id="forks_section"></div>
       </div>
-      <div id="blog_section">
+      <div id="blog_section" style="display:none;">
         <h1>Blog.</h1>
         <div id="blogs"></div>
       </div>
@@ -133,30 +164,13 @@
     </div>
     
     <script type="text/javascript">
-      // 🎯 تدمير شاشة التحميل فوراً في 0 ثانية لمنع أي تعليق مستقبلي
-      setTimeout(function() {
-        document.getElementById("loading").style.display = "none";
-      }, 0);
-
+      // إجبار المتصفح على محو اللودر نهائياً فور التشغيل غصب عن ملف الـ build القديم
+      document.getElementById("loading").style.display = "none";
+      
       $.getJSON("blog.json", function(blog) {
         blog = blog || [];
         if (blog.length == 0) {
           return (document.getElementById("blog_section").style.display = "none");
-        }
-        for (var i = 0; i < blog.length; i++) {
-          $("#blogs").append(`
-            <a href="./blog/${blog[i].url_title}/" target="_blank">
-                <section>
-                    <img src="./blog/${blog[i].url_title}/${blog[i].top_image}">
-                    <div class="blog_container">
-                        <div class="section_title">${blog[i].title}</div>
-                        <div class="about_section">
-                            ${blog[i].sub_title}
-                        </div>
-                    </div>
-                </section>
-            </a>
-            `);
         }
       }).fail(function() {
         return (document.getElementById("blog_section").style.display = "none");
@@ -174,26 +188,11 @@
         useTransform: true
       });
 
-      const magicForksGrid = new MagicGrid({
-        container: "#forks_section",
-        animate: false,
-        gutter: 30,
-        static: true,
-        useMin: false,
-        maxColumns: 2,
-        useTransform: true
-      });
-
       $("document").ready(() => {
         magicProjectsGrid.listen();
-        magicForksGrid.listen();
-        
-        // إعادة حساب أبعاد شبكة المشاريع بعد إلغاء لودر التحميل لضمان عدم تداخل الكروت
         setTimeout(() => {
             magicProjectsGrid.position();
-        }, 200);
+        }, 100);
       });
     </script>
-  
-
 </body></html>
