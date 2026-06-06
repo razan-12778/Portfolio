@@ -1,0 +1,17 @@
+[
+ {
+  "username": "razan-12778",
+  "name": "Razan Alzahrani",
+  "userimg": "https://avatars.githubusercontent.com/u/100855856?v=4",
+  "sort": "created",
+  "order": "asc",
+  "includeFork": false,
+  "theme": "custom",
+  "types": [
+   "all"
+  ],
+  "exclude": [
+   "razan-12778"
+  ]
+ }
+]
